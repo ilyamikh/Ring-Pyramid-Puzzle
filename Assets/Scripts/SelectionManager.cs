@@ -9,7 +9,7 @@ public class SelectionManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetSelection();
+        SetCurrentSelection(true);
     }
 
     // Update is called once per frame
@@ -28,37 +28,28 @@ public class SelectionManager : MonoBehaviour
         {
             SelectPrevious();
         }
-
-
-    }
-    private void SetSelection()
-    {
-        foreach(GameObject peg in pegs)
-        {
-            if (peg == pegs[currentSelection])
-            {
-                peg.GetComponent<PegBehavior>().SetSelected(true);
-            }
-            else
-            {
-                peg.GetComponent<PegBehavior>().SetSelected(false);
-            }
-        }
     }
     private void SelectNext()
     {
+        SetCurrentSelection(false);
         currentSelection++;
         if (currentSelection >= pegs.Count)
             currentSelection = 0;
 
-        SetSelection();
+        SetCurrentSelection(true);
     }
     private void SelectPrevious()
     {
+        SetCurrentSelection(false);
         currentSelection--;
         if (currentSelection < 0)
             currentSelection = pegs.Count - 1;
 
-        SetSelection();
+        SetCurrentSelection(true);
+    }
+
+    private void SetCurrentSelection(bool selection)
+    {
+        pegs[currentSelection].GetComponent<PegBehavior>().SetSelected(selection);
     }
 }
