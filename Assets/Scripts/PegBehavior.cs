@@ -7,7 +7,7 @@ public class PegBehavior : MonoBehaviour
     public enum Position {Starting, Middle, Ending};
     [SerializeField] Position pegPosition;
     [SerializeField] GameObject selectedIndicator;
-    [SerializeField] Stack<GameObject> rings;
+    public Stack<GameObject> rings = new Stack<GameObject>();
     private bool isSelected = false;
     // Start is called before the first frame update
     void Start()
