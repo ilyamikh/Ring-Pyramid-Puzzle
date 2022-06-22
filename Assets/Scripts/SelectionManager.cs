@@ -8,6 +8,7 @@ public class SelectionManager : MonoBehaviour
     [SerializeField] GameObject[] ringPrefabs = new GameObject[9];
     private int currentSelection = 0;
     GameObject selectedPeg;
+    public GameObject activeRing;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,7 @@ public class SelectionManager : MonoBehaviour
     void Update()
     {
         SelectPeg();
+
     }
     private void SelectPeg()
     {
@@ -31,6 +33,19 @@ public class SelectionManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             SelectPrevious();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (!activeRing)
+            {
+                ActivateRing();
+            }
+            else if(activeRing == selectedPeg.GetComponent<PegBehavior>().rings.Peek())
+            {
+                DeactivateRing();
+            }
+
         }
     }
     private void SelectNext()
@@ -64,5 +79,19 @@ public class SelectionManager : MonoBehaviour
         {
             Instantiate(ringPrefabs[i]).GetComponent<RingBehavior>().StackToPeg(selectedPeg);      
         }
+    }
+    private void ActivateRing()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            activeRing = selectedPeg.GetComponent<PegBehavior>().rings.Peek();
+            activeRing.transform.Translate(Vector3.up * 0.50f);
+        }
+    }
+
+    private void DeactivateRing()
+    {
+        activeRing.transform.Translate(Vector3.down * 0.50f);
+        activeRing = null;
     }
 }
