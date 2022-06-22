@@ -5,6 +5,7 @@ using UnityEngine;
 public class SelectionManager : MonoBehaviour
 {
     public List<GameObject> pegs;
+    [SerializeField] GameObject[] ringPrefabs = new GameObject[9];
     private int currentSelection = 0;
     // Start is called before the first frame update
     void Start()
