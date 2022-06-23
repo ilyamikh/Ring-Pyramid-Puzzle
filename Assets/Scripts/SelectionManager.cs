@@ -49,16 +49,26 @@ public class SelectionManager : MonoBehaviour
                 {
                     DeactivateRing();
                 }
+                else
+                {
+                    if (IsLowerGauge(selectedPeg.GetComponent<PegBehavior>().rings.Peek()))
+                    {
+                        MoveActiveRing();
+                    }
+                }
             }
             else
             {
-                Debug.Log("Move Triggered.");
                 if (activeRing)
                 {
                     MoveActiveRing();
                 }
             }
         }
+    }
+    private bool IsLowerGauge(GameObject otherRing)
+    {
+        return activeRing.GetComponent<RingBehavior>().ring.CanStack(otherRing.GetComponent<RingBehavior>().ring);
     }
     private void MoveActiveRing()
     {

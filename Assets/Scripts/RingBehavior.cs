@@ -33,7 +33,7 @@ public class RingBehavior : MonoBehaviour
 
         public bool CanStack(Ring other)
         {
-            return other.gauge > gauge;
+            return other.gauge < gauge;
         }
     }
 
