@@ -14,39 +14,59 @@ public class SelectionManager : MonoBehaviour
     {
         SetCurrentSelection(true);
         LoadRings();
-
+        LogState();
     }
 
     // Update is called once per frame
     void Update()
     {
-        SelectPeg();
+        GetAction();
 
     }
-    private void SelectPeg()
+    private void GetAction()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             SelectNext();
+            LogState();
         }
 
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             SelectPrevious();
+            LogState();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (!activeRing)
+            if(selectedPeg.GetComponent<PegBehavior>().rings.Count > 0)
             {
-                ActivateRing();
+                if (!activeRing)
+                {
+                    ActivateRing();
+                }
+                else if(activeRing == selectedPeg.GetComponent<PegBehavior>().rings.Peek())
+                {
+                    DeactivateRing();
+                }
             }
-            else if(activeRing == selectedPeg.GetComponent<PegBehavior>().rings.Peek())
+            else
             {
-                DeactivateRing();
+                Debug.Log("Move Triggered.");
+                if (activeRing)
+                {
+                    MoveActiveRing();
+                }
             }
-
         }
+    }
+    private void MoveActiveRing()
+    {
+
+        GameObject fromPeg = activeRing.GetComponent<RingBehavior>().currentPeg;
+        GameObject movingRing = fromPeg.GetComponent<PegBehavior>().rings.Pop();
+        movingRing.GetComponent<RingBehavior>().StackToPeg(selectedPeg);
+        activeRing = null;
     }
     private void SelectNext()
     {
@@ -93,5 +113,12 @@ public class SelectionManager : MonoBehaviour
     {
         activeRing.transform.Translate(Vector3.down * 0.50f);
         activeRing = null;
+    }
+
+    private void LogState()
+    {
+        string peg = selectedPeg.GetComponent<PegBehavior>().pegPosition.ToString();
+        int rings = selectedPeg.GetComponent<PegBehavior>().rings.Count;
+        Debug.Log(peg + " peg, " + rings + " rings.");
     }
 }

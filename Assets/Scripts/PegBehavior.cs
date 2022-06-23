@@ -5,7 +5,7 @@ using UnityEngine;
 public class PegBehavior : MonoBehaviour
 {
     public enum Position {Starting, Middle, Ending};
-    [SerializeField] Position pegPosition;
+    public Position pegPosition;
     [SerializeField] GameObject selectedIndicator;
     public Stack<GameObject> rings = new Stack<GameObject>();
     private bool isSelected = false;
@@ -27,14 +27,7 @@ public class PegBehavior : MonoBehaviour
         isSelected = selection;
         if (isSelected)
         {
-            Debug.Log(pegPosition + " peg selected.");
             selectedIndicator.GetComponent<MovePegSelector>().SetXPosition(gameObject.transform.position.x);
         }
     }
-
-    public void GetTopRing()
-    {
-        selectionManager.activeRing = rings.Peek();
-    }
-
 }
