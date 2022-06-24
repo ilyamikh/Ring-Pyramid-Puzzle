@@ -5,7 +5,7 @@ using UnityEngine;
 public class SelectionManager : MonoBehaviour
 {
     public List<GameObject> pegs;
-    [SerializeField] GameObject[] ringPrefabs = new GameObject[9];
+    public GameObject[] ringPrefabs = new GameObject[9];
     private int currentSelection = 0;
     GameObject selectedPeg;
     public GameObject activeRing;
@@ -76,6 +76,7 @@ public class SelectionManager : MonoBehaviour
         GameObject fromPeg = activeRing.GetComponent<RingBehavior>().currentPeg;
         GameObject movingRing = fromPeg.GetComponent<PegBehavior>().rings.Pop();
         movingRing.GetComponent<RingBehavior>().StackToPeg(selectedPeg);
+        activeRing.GetComponent<RingBehavior>().DeactivateGhost();
         activeRing = null;
     }
     private void SelectNext()
@@ -101,8 +102,23 @@ public class SelectionManager : MonoBehaviour
     {
         pegs[currentSelection].GetComponent<PegBehavior>().SetSelected(selection);
         selectedPeg = pegs[currentSelection];
-    }
+        ShowGhost();
 
+    }
+    private void ShowGhost()
+    {
+        if (activeRing)
+        {
+            activeRing.GetComponent<RingBehavior>().ActivateGhost(selectedPeg);
+            
+            if(activeRing.GetComponent<RingBehavior>().currentPeg == selectedPeg)
+            {
+             activeRing.GetComponent<RingBehavior>().DeactivateGhost();
+            }
+        }
+
+
+    }
     private void LoadRings()
     {
         for (int i = 0; i < ringPrefabs.Length; i++)
@@ -122,6 +138,7 @@ public class SelectionManager : MonoBehaviour
     private void DeactivateRing()
     {
         activeRing.transform.Translate(Vector3.down * 0.50f);
+        activeRing.GetComponent<RingBehavior>().DeactivateGhost();
         activeRing = null;
     }
 
