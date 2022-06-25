@@ -77,6 +77,7 @@ public class SelectionManager : MonoBehaviour
     }
     private void MoveActiveRing()
     {
+        //ABSTRACTION
         moves++;
         moveCountText.text = "Moves: " + moves;
         GameObject fromPeg = activeRing.GetComponent<RingBehavior>().currentPeg;

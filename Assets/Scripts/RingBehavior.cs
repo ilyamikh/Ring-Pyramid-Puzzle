@@ -25,6 +25,7 @@ public class RingBehavior : MonoBehaviour
 
     public class Ring
     {
+        //ENCAPSULATION
         protected readonly int gauge;
         public GameObject peg { set; get; }
 
@@ -35,6 +36,7 @@ public class RingBehavior : MonoBehaviour
 
         public int Gauge()
         {
+            //ENCAPSULATION
             return gauge;
         }
         public bool CanStack(Ring other)
@@ -45,9 +47,11 @@ public class RingBehavior : MonoBehaviour
 
     public class Ghost : Ring
     {
+        //INHERITANCE
         public GameObject ghostRing;
         public Ghost(int size) : base(size)
         {
+            //POLYMORPHISM
             ghostRing = Instantiate(GameObject.Find("Selection Manager").GetComponent<SelectionManager>().ringPrefabs[base.gauge-1]);
             ghostRing.SetActive(false);
         }
@@ -104,6 +108,7 @@ public class RingBehavior : MonoBehaviour
                 );
         }
 
+        //POLYMORPHISM
         private void SetPosition(GameObject peg)
         {
             ghostRing.transform.position = new Vector3(
