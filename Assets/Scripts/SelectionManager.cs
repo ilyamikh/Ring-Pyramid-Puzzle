@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using TMPro;
 
 public class SelectionManager : MonoBehaviour
 {
@@ -9,12 +11,15 @@ public class SelectionManager : MonoBehaviour
     private int currentSelection = 0;
     GameObject selectedPeg;
     public GameObject activeRing;
+    [SerializeField] TextMeshProUGUI moveCountText;
+    private int moves = 0;
     // Start is called before the first frame update
     void Start()
     {
         SetCurrentSelection(true);
         LoadRings();
         LogState();
+        moveCountText.text = "Moves: " + moves;
     }
 
     // Update is called once per frame
@@ -72,7 +77,8 @@ public class SelectionManager : MonoBehaviour
     }
     private void MoveActiveRing()
     {
-
+        moves++;
+        moveCountText.text = "Moves: " + moves;
         GameObject fromPeg = activeRing.GetComponent<RingBehavior>().currentPeg;
         GameObject movingRing = fromPeg.GetComponent<PegBehavior>().rings.Pop();
         movingRing.GetComponent<RingBehavior>().StackToPeg(selectedPeg);
@@ -147,5 +153,10 @@ public class SelectionManager : MonoBehaviour
         string peg = selectedPeg.GetComponent<PegBehavior>().pegPosition.ToString();
         int rings = selectedPeg.GetComponent<PegBehavior>().rings.Count;
         Debug.Log(peg + " peg, " + rings + " rings.");
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(1);
     }
 }
